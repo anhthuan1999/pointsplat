@@ -28,3 +28,4 @@ splines
 wandb
 opencv-python
 lpips
+gin-config

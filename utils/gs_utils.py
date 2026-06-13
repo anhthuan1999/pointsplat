@@ -4,11 +4,6 @@ import gsplat
 import math
 import numpy as np
 import os, cv2
-from collections import OrderedDict
-from plyfile import PlyData, PlyElement
-import json
-from argparse import Namespace
-import torch_scatter
 BLOCK_WIDTH = 16 
 
 C0 = 0.28209479177387814
@@ -52,7 +47,7 @@ def rasterize_gaussians_to_singleimg(gs_params, camera_to_world, gt_img, cx, cy,
     mask = (quats.norm(dim=-1) - 1)<1e-6
     inv_mask = ~mask
     if inv_mask.sum() > 0:
-        print(f"Warning: {mask.sum()} quaternions are not normalized\n, This quaternions are ")
+        print(f"Warning: {inv_mask.sum()} quaternions are not normalized, resetting to identity")
         quats[inv_mask] = torch.tensor([0, 0, 0, 1.], device=quats.device)
 
     if 'opacities' in gs_params:
@@ -72,11 +67,10 @@ def rasterize_gaussians_to_singleimg(gs_params, camera_to_world, gt_img, cx, cy,
         viewdirs_ = means.detach() - camera_to_world.detach()[:3, 3]  # (N, 3)
         viewdirs_norm = viewdirs_.norm(dim=-1, keepdim=True)
         viewdirs = viewdirs_ / viewdirs_norm
-        ## In some extremely rare case, the gs mean can be the same as the camera position
-        # In this case, we set viewdirs randomly
+        # if a Gaussian mean coincides with the camera position, viewdir is undefined — randomize it
         if torch.isnan(viewdirs).any():
-            mask_ = (viewdirs_norm==0).squeeze() #N,
-            newviewdir = torch.randn_like(viewdirs_[mask_]) #N,3
+            mask_ = (viewdirs_norm == 0).squeeze()
+            newviewdir = torch.randn_like(viewdirs_[mask_])
             newviewdir_norm = newviewdir.norm(dim=-1, keepdim=True)
             viewdirs[mask_] = newviewdir/newviewdir_norm
             

@@ -1,6 +1,6 @@
 # PointSplat: Efficient Geometry-Driven Pruning and Transformer Refinement for 3D Gaussian Splatting
 
-**[Paper](https://openaccess.thecvf.com/content/CVPR2026W/3DMV/papers/Tran_PointSplat_Efficient_Geometry-Driven_Pruning_and_Transformer_Refinement_for_3D_Gaussian_CVPRW_2026_paper.pdf)** | **[arXiv](https://arxiv.org/abs/2604.09903)**
+**[Paper](https://openaccess.thecvf.com/content/CVPR2026W/3DMV/papers/Tran_PointSplat_Efficient_Geometry-Driven_Pruning_and_Transformer_Refinement_for_3D_Gaussian_CVPRW_2026_paper.pdf)** | **[arXiv](https://arxiv.org/abs/2604.09903)** | **[Data (ScanNet - 3DGS only)](https://drive.google.com/drive/folders/1nUDWLQzoxbn4K01gd3DZwZgrIUasdeOs?usp=sharing)**
 
 **Anh Thuan Tran, Jana Kosecka** — George Mason University
 
@@ -15,17 +15,20 @@ We introduce **PointSplat**, a geometry-driven prune-and-refine framework for 3D
 ## Installation
 
 ```bash
-git clone --recursive https://github.com/anhthuan1999/PointSplat.git
-cd PointSplat
+git clone --recursive https://github.com/anhthuan1999/pointsplat
+cd pointsplat
 
-conda create -n poinsplat python=3.8 -y
-conda activate poinsplat
+conda create -n poinsplat_env python=3.8 -y
+conda activate poinsplat_env
 
 # PyTorch (adjust for your CUDA version)
 pip install torch==2.4.1 torchvision==0.19.1 torchaudio==2.4.1 --index-url https://download.pytorch.org/whl/cu121
 
 # Pointcept (Point Transformer V3 backbone)
 pip install Pointcept/
+cd Pointcept/libs/pointops
+python setup.py install
+cd ../../..
 
 # Flash-Attention
 pip install flash-attn --no-build-isolation
@@ -44,11 +47,11 @@ pip install git+https://github.com/ChenYutongTHU/nerfstudio_splatformer.git
 
 ## Data Preparation
 
-PointSplat takes pre-trained 3DGS as input. We use a [custom Nerfstudio fork](https://github.com/ChenYutongTHU/nerfstudio_splatformer) (`splatfacto`) to generate initial Gaussians from multi-view images. Install it via:
+PointSplat takes pre-trained 3DGS as input. We use a [custom Nerfstudio fork](https://github.com/ChenYutongTHU/nerfstudio_splatformer) (`splatfacto`) to generate initial Gaussians from multi-view images.
 
-```bash
-pip install git+https://github.com/ChenYutongTHU/nerfstudio_splatformer.git
-```
+> **Note:** We provide pre-processed Nerfstudio outputs (initial 3DGS) for **ScanNet++ only** — download [here](https://drive.google.com/drive/folders/1nUDWLQzoxbn4K01gd3DZwZgrIUasdeOs?usp=sharing). For Replica, you will need to run Nerfstudio yourself. We apologize for the inconvenience. Raw images must be downloaded from below sources:
+> - **ScanNet++**: [https://kaldir.vc.in.tum.de/scannetpp/](https://kaldir.vc.in.tum.de/scannetpp/)
+> - **Replica**: [https://github.com/cvg/nice-slam](https://github.com/cvg/nice-slam)
 
 ### Dataset structure
 
