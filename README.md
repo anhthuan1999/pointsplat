@@ -152,7 +152,7 @@ Evaluation metrics (PSNR, SSIM, LPIPS) are written to `outputs/<name>/test/<data
 If you find this work helpful, please cite:
 
 ```bibtex
-@InProceedings{Tran_2026_CVPR,
+@InProceedings{Tran_2026_PointSplat,
     author    = {Tran, Anh Thuan and Kosecka, Jana},
     title     = {PointSplat: Efficient Geometry-Driven Pruning and Transformer Refinement for 3D Gaussian Splatting},
     booktitle = {Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR) Workshops},
