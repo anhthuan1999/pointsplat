@@ -44,7 +44,11 @@ pip install git+https://github.com/ChenYutongTHU/nerfstudio_splatformer.git
 
 ## Data Preparation
 
-PointSplat takes pre-trained 3DGS as input. We use [Nerfstudio](https://docs.nerf.studio/) (`splatfacto`) to generate initial Gaussians from multi-view images.
+PointSplat takes pre-trained 3DGS as input. We use a [custom Nerfstudio fork](https://github.com/ChenYutongTHU/nerfstudio_splatformer) (`splatfacto`) to generate initial Gaussians from multi-view images. Install it via:
+
+```bash
+pip install git+https://github.com/ChenYutongTHU/nerfstudio_splatformer.git
+```
 
 ### Dataset structure
 
