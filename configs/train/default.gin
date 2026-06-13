@@ -1,0 +1,51 @@
+set_seed.seed = 42
+total_steps = 30000
+training.total_steps = %total_steps
+training.pretrain_steps = 0
+training.log_interval = 1
+training.grad_clip_norm = 2.0
+training.resume_from_step = 0
+training.enable_amp = False
+training.lpips_loss_weight = 0.1 #1.0 0.1
+training.log_image_interval = 100
+training.eval_interval = 1000
+training.save_interval = 1000
+
+
+pretrain/build_optimizer.lr_dict = {
+    "base": 1e-3, #Useless
+    "embedding": 1e-3, 
+    "backbone": 1e-3,
+    "features_dc": 1e-3,
+    "features_rest": 5e-5,
+    "scales": 1e-3,
+    "opacities": 1e-3,
+    "quats": 1e-3,
+    "means": 1e-3
+}
+pretrain/build_optimizer.optimizer_type = 'adam'
+pretrain/build_optimizer.optimizer_params = {'eps': 1e-15}
+pretrain/build_scheduler.total_step = %total_steps
+pretrain/build_scheduler.schedule = 'constant'
+
+
+#Update: 3e-5, 1.5e-6 5e-5 1e-6
+train2D/build_optimizer.lr_dict = {
+    "base": 5e-5, #Useless 3e-5, #
+    "embedding": 5e-5, 
+    "backbone": 5e-5,
+    "features_dc": 5e-5,
+    "features_rest": 1e-6,
+    "scales": 5e-5,
+    "opacities": 5e-5,
+    "quats": 5e-5,
+    "means": 5e-5
+}
+train2D/build_optimizer.optimizer_type = 'adam'
+train2D/build_optimizer.optimizer_params = {'eps': 1e-15}
+train2D/build_scheduler.total_step = %total_steps
+train2D/build_scheduler.schedule = 'cosine'
+#cosine constant
+build_trainloader.accumulate_step = 1
+build_trainloader.num_workers = 6
+build_trainloader.batch_size = 1

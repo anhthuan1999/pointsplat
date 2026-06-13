@@ -1,0 +1,33 @@
+SplatfactoDataset.remove_outlier_ndevs=-1
+SplatfactoDataset.image_per_scene = None # Only used for train_dataset
+SplatfactoDataset.sample_ratio_test = None # Only used for train_dataset
+SplatfactoDataset.max_gs_num = 0.2  # 100000
+SplatfactoDataset.load_pose_src = 'nerfstudio'
+
+collate_fn = @GS_collate_fn
+build_trainloader.batch_size = 1
+build_trainloader.accumulate_step = 1 
+build_trainloader.num_workers = 1
+build_trainloader.collate_fn = %collate_fn
+train_dataset/SplatfactoDataset.train_or_test = 'train'
+train_dataset/SplatfactoDataset.nerfstudio_folder = 'data/rep/rep_train/nerfstudio'
+train_dataset/SplatfactoDataset.colmap_folder = 'data/rep/rep_train/colmap'
+train_dataset/SplatfactoDataset.image_per_scene = 1
+train_dataset/SplatfactoDataset.sample_ratio_test = 0.7 
+train_dataset/SplatfactoDataset.cache_steps = 1 
+train_dataset/SplatfactoDataset.cache_num_scenes = 1  # no-cache
+train_dataset/SplatfactoDataset.split_across_gpus = True 
+
+build_testloader.batch_size = 1
+build_testloader.num_workers = 1 # Must be 1
+build_testloader.collate_fn = %collate_fn
+test_dataset/SplatfactoDataset.train_or_test = 'test'
+test_dataset/SplatfactoDataset.nerfstudio_folder = {
+    'testdata':'data/rep/rep_train/nerfstudio'
+}
+test_dataset/SplatfactoDataset.colmap_folder = {
+   'testdata':'data/rep/rep_test/colmap'
+}
+test_dataset/SplatfactoDataset.cache_steps = 1 
+test_dataset/SplatfactoDataset.cache_num_scenes = 1  
+test_dataset/SplatfactoDataset.split_across_gpus = False
