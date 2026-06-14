@@ -1,6 +1,8 @@
 # PointSplat: Efficient Geometry-Driven Pruning and Transformer Refinement for 3D Gaussian Splatting
 
-**[Paper](https://openaccess.thecvf.com/content/CVPR2026W/3DMV/papers/Tran_PointSplat_Efficient_Geometry-Driven_Pruning_and_Transformer_Refinement_for_3D_Gaussian_CVPRW_2026_paper.pdf)** | **[arXiv](https://arxiv.org/abs/2604.09903)** | **[Data (ScanNet - 3DGS only)](https://drive.google.com/drive/folders/1nUDWLQzoxbn4K01gd3DZwZgrIUasdeOs?usp=sharing)**
+**[Paper](https://openaccess.thecvf.com/content/CVPR2026W/3DMV/papers/Tran_PointSplat_Efficient_Geometry-Driven_Pruning_and_Transformer_Refinement_for_3D_Gaussian_CVPRW_2026_paper.pdf)** | **[arXiv](https://arxiv.org/abs/2604.09903)** 
+
+<!-- | **[Data (ScanNet - 3DGS only)](https://drive.google.com/drive/folders/1nUDWLQzoxbn4K01gd3DZwZgrIUasdeOs?usp=sharing)** -->
 
 **Anh Thuan Tran, Jana Kosecka** — George Mason University
 
