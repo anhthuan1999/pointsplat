@@ -3,6 +3,8 @@ SplatfactoDataset.image_per_scene = None # Only used for train_dataset
 SplatfactoDataset.sample_ratio_test = None # Only used for train_dataset
 SplatfactoDataset.max_gs_num = 0.2  # 100000
 SplatfactoDataset.load_pose_src = 'nerfstudio'
+SplatfactoDataset.pruning_alpha = 0.3  # weight for opacity vs. scale in pruning score
+SplatfactoDataset.pruning_ratio = 0.5  # fraction of Gaussians to keep (1.0 = keep all after max_gs_num cap)
 
 collate_fn = @GS_collate_fn
 build_trainloader.batch_size = 1

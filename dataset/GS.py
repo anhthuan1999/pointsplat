@@ -14,10 +14,6 @@ from PIL import Image
 from time import time
 import math
 
-ALPHA = 0.3
-RATIO = 1.0
-
-
 @gin.configurable
 class SplatfactoDataset(torch.utils.data.IterableDataset):
     def __init__(self,
@@ -32,6 +28,8 @@ class SplatfactoDataset(torch.utils.data.IterableDataset):
                  cache_steps: int,
                  cache_num_scenes: int,
                  split_across_gpus: bool,
+                 pruning_alpha: float = 0.3,
+                 pruning_ratio: float = 0.5,
                  background_color: list = [0, 0, 0],
                  ):
         self.test_id = 0
@@ -53,6 +51,8 @@ class SplatfactoDataset(torch.utils.data.IterableDataset):
         self.cache_steps, self.cache_num_scenes = cache_steps, cache_num_scenes
         self.split_across_gpus = split_across_gpus
         self.max_gs_num = max_gs_num
+        self.pruning_alpha = pruning_alpha
+        self.pruning_ratio = pruning_ratio
         self.cache_scenes = []
         self.background_color = background_color
         self.gs_params = None
@@ -169,13 +169,13 @@ class SplatfactoDataset(torch.utils.data.IterableDataset):
 
         # Geometry-driven pruning: rank by opacity and volume
         N = gs_params['means'].shape[0]
-        self.max_gs_num = int(N * RATIO)
+        self.max_gs_num = int(N * self.pruning_ratio)
         if N > self.max_gs_num:
             inlier_mask = torch.zeros(N, dtype=torch.bool)
             opacities_norm = ((gs_params['opacities'] - gs_params['opacities'].mean()) / (gs_params['opacities'].std() + 1e-6)).squeeze(1)
             scales_sum = (4 / 3 * math.pi) * torch.prod(gs_params['scales'] + 1e-6, dim=-1)
             scales_norm = (scales_sum - scales_sum.mean()) / (scales_sum.std() + 1e-6)
-            rank_tensor = ALPHA * opacities_norm + (1 - ALPHA) * scales_norm
+            rank_tensor = self.pruning_alpha * opacities_norm + (1 - self.pruning_alpha) * scales_norm
             sorted_indices = torch.argsort(rank_tensor, descending=True)
             keep_indices = sorted_indices[:self.max_gs_num]
             inlier_mask[keep_indices] = True
